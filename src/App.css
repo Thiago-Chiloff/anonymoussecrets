@@ -1,0 +1,280 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Font Families */
+  --font-primary: 'Poppins', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+  
+  /* Transitions */
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+  
+  /* Light Theme */
+  --color-light-primary: #ffffff;
+  --color-light-secondary: #f5f5f5;
+  --color-light-tertiary: #e0e0e0;
+  --color-light-text: #212529;
+  --color-light-text-secondary: #495057;
+  --color-light-accent: #6a0dad;
+  --color-light-accent-hover: #7b1fa2;
+  --color-light-warning: #d32f2f;
+  --color-light-success: #2e7d32;
+  --color-light-input-bg: #ffffff;
+  --color-light-input-border: #cccccc;
+  
+  /* Dark Theme */
+  --color-dark-primary: #121212;
+  --color-dark-secondary: #1e1e1e;
+  --color-dark-tertiary: #2d2d2d;
+  --color-dark-text: #f8f9fa;
+  --color-dark-text-secondary: #adb5bd;
+  --color-dark-accent: #9c27b0;
+  --color-dark-accent-hover: #ba68c8;
+  --color-dark-warning: #f44336;
+  --color-dark-success: #4caf50;
+  --color-dark-input-bg: #2a2a2a;
+  --color-dark-input-border: #555555;
+}
+
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: 
+    background-color var(--transition-base), 
+    color var(--transition-base),
+    border-color var(--transition-base);
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-primary);
+}
+
+body {
+  font-family: var(--font-primary);
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Layout Styles */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--spacing-xl);
+  background-color: var(--color-primary);
+}
+
+/* Theme Classes */
+.light-mode {
+  --color-primary: var(--color-light-primary);
+  --color-secondary: var(--color-light-secondary);
+  --color-tertiary: var(--color-light-tertiary);
+  --color-text: var(--color-light-text);
+  --color-text-secondary: var(--color-light-text-secondary);
+  --color-accent: var(--color-light-accent);
+  --color-accent-hover: var(--color-light-accent-hover);
+  --color-warning: var(--color-light-warning);
+  --color-success: var(--color-light-success);
+  --color-input-bg: var(--color-light-input-bg);
+  --color-input-border: var(--color-light-input-border);
+}
+
+.dark-mode {
+  --color-primary: var(--color-dark-primary);
+  --color-secondary: var(--color-dark-secondary);
+  --color-tertiary: var(--color-dark-tertiary);
+  --color-text: var(--color-dark-text);
+  --color-text-secondary: var(--color-dark-text-secondary);
+  --color-accent: var(--color-dark-accent);
+  --color-accent-hover: var(--color-dark-accent-hover);
+  --color-warning: var(--color-dark-warning);
+  --color-success: var(--color-dark-success);
+  --color-input-bg: var(--color-dark-input-bg);
+  --color-input-border: var(--color-dark-input-border);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-sm);
+}
+
+p {
+  margin-bottom: var(--spacing-sm);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+}
+
+/* Component Styles */
+.button {
+  font-family: var(--font-primary);
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+}
+
+.button:hover {
+  background-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+}
+
+.button.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.card {
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+  border: 1px solid var(--color-tertiary);
+}
+
+/* Form Elements */
+input, textarea, select {
+  font-family: var(--font-primary);
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-input-border);
+  color: var(--color-text);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Page Styles */
+.page-container {
+  text-align: center;
+  padding: var(--spacing-xl);
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-heading {
+  font-size: 2rem;
+  color: var(--color-accent);
+}
+
+.page-content {
+  color: var(--color-text);
+  max-width: 600px;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-hover);
+}
+
+.error-banner {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-banner button {
+  background: none;
+  border: none;
+  color: var(--color-warning);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+}
+/* Responsive Design */
+@media (max-width: 992px) {
+  .main-content {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--spacing-md);
+  }
+  
+  .page-heading {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .page-heading {
+    font-size: 1.5rem;
+  }
+}
