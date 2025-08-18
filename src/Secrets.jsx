@@ -26,7 +26,7 @@ function Secrets({ secrets }) {
 
     return texto
       .replace(padroes.telefones, '[NÚMERO BLOQUEADO]')
-      .replace(padroes.nomes, match => '*'.repeat(match.length));
+      .replace(padroes.telefones, match => '*'.repeat(match.length));
   };
 
   return (
