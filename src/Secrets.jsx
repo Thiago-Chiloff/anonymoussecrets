@@ -12,6 +12,26 @@ function Secrets({ secrets }) {
     return new Date(dateString).toLocaleDateString('pt-BR', options);
   };
 
+  // Função para sanitizar texto (mesmo se já foi sanitizado antes)
+  const sanitizarTexto = (texto) => {
+    // Verifica se já foi sanitizado
+    if (texto.includes('[NÚMERO BLOQUEADO]') || texto.includes('*'.repeat(5))) {
+      return texto;
+    }
+
+    // Padrões para detectar dados sensíveis
+    const padroes = {
+      telefones: /(\+\d{1,3}\s?)?(\(\d{2}\)\s?)?\d{4,5}[-\s]?\d{4}/g,
+      frasesSuspeitas: /(meu\s+n[úu]mero|ligue\s+para|contato\s+é|whatsapp|telefone\s+é|me\s+chame)/gi,
+      nomes: /\b([A-Za-zÀ-ú]{3,})(?:\s+[A-Za-zÀ-ú]{3,})+\b/g
+    };
+
+    return texto
+      .replace(padroes.telefones, '[NÚMERO BLOQUEADO]')
+      .replace(padroes.frasesSuspeitas, match => '*'.repeat(match.length))
+      .replace(padroes.nomes, match => '*'.repeat(match.length));
+  };
+
   return (
     <div className="secrets-container">
       <div className="secrets-header">
@@ -35,7 +55,7 @@ function Secrets({ secrets }) {
                 <FaQuoteLeft className="quote-icon" />
               </div>
               
-              <p className="secret-text">{secret.text}</p>
+              <p className="secret-text">{sanitizarTexto(secret.text)}</p>
               
               <div className="secret-footer">
                 <div className="secret-date-container">
