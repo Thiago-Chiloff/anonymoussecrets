@@ -149,6 +149,7 @@ function App() {
       
       <main className="main-content">
         <Routes>
+          <Route path="*" element={<Navigate to="/" replace />} />
           <Route path="/" element={<Home />} />
           <Route path="/secrets" element={<Secrets secrets={secrets} />} />
           <Route path="/write" element={<WriteSecret addSecret={addSecret} />} />

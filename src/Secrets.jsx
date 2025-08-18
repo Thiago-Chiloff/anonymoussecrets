@@ -15,7 +15,7 @@ function Secrets({ secrets }) {
   // Função para sanitizar texto (mesmo se já foi sanitizado antes)
   const sanitizarTexto = (texto) => {
     // Verifica se já foi sanitizado
-    if (texto.includes('[NÚMERO BLOQUEADO]') || texto.includes('*'.repeat(5))) {
+    if (texto.includes('[*]') || texto.includes('*'.repeat(5))) {
       return texto;
     }
 
