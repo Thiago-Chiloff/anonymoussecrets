@@ -17,21 +17,15 @@ function Rules() {
 
       <div className="rules-grid">
         <div className="rule-card">
-          <FaUserSecret className="rule-icon" />
+          <FaUserSecret className="rule-icon" /> 
           <h3>Respeite o Anonimato</h3>
-          <p>Nunca compartilhe informações pessoais suas ou de outros</p>
+          <p>Não use nomes reais, deixe da forma mais agrangente o possível</p>
         </div>
 
         <div className="rule-card">
           <FaBan className="rule-icon" />
           <h3>Sem Discurso de Ódio</h3>
           <p>Discriminação ou assédio de qualquer tipo é proibido</p>
-        </div>
-
-         <div className="rule-card">
-          <FaBan className="rule-icon" />
-          <h3>NÃO USE NOMES REAIS</h3>
-          <p>Ao se referir alguem deixa da forma mais abrangente possível, assim, ninguém ira indetificá-lo  </p>
         </div>
 
         <div className="rule-card">
