@@ -13,17 +13,47 @@ function WriteSecret({ addSecret }) {
     setCaracteresRestantes(1500 - texto.length);
   }, [texto]);
 
+  // Função adicionada para filtrar dados sensíveis
+  const filtrarDadosSensiveis = (texto) => {
+    // Falsos positivos comuns
+    const palavrasPermitidas = ['que', 'com', 'sem', 'para', 'meu', 'sou', 'uma', 'como'];
+    
+    // Detecta nomes (2+ palavras com 3+ letras, mesmo minúsculas)
+    const regexNomes = /\b([a-zà-ú]{3,})(?:\s+[a-zà-ú]{3,})+\b/g;
+    
+    // Detecta telefones (com/sem formatação)
+    const regexTelefone = /(\d{2}\s?\d{4,5}\s?\d{4})|(\(\d{2}\)\s?\d{4,5}\-?\d{4})/g;
+    
+    return texto
+      .split(/(\s+)/)
+      .map(palavra => {
+        // Verifica se é um nome próprio
+        if (regexNomes.test(palavra.toLowerCase()) && 
+            !palavrasPermitidas.includes(palavra.toLowerCase())) {
+          return '*'.repeat(palavra.length);
+        }
+        
+        // Verifica se é telefone
+        if (regexTelefone.test(palavra)) {
+          return '*'.repeat(palavra.length);
+        }
+        
+        return palavra;
+      })
+      .join('');
+  };
+
   const handleChange = (e) => {
     if (e.target.value.length <= 1500) {
       setTexto(e.target.value);
     }
   };
 
- const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (texto.trim() && texto.length <= 1500) {
-      // Envia apenas o texto puro para o addSecret
-      addSecret(texto);
+      // Aplica a filtragem antes de enviar
+      addSecret(filtrarDadosSensiveis(texto));
       setTexto('');
       setEnviado(true);
       setTimeout(() => setEnviado(false), 3000);
@@ -31,6 +61,10 @@ function WriteSecret({ addSecret }) {
     }
   };
 
+  /* 
+    🔽 TUDO ABAIXO PERMANECE EXATAMENTE IGUAL 🔽
+    (não alterei nenhum JSX, textos ou classes)
+  */
   return (
     <div className="write-container">
       <div className="write-header">
