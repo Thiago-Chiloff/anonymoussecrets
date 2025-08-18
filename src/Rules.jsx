@@ -28,6 +28,12 @@ function Rules() {
           <p>Discriminação ou assédio de qualquer tipo é proibido</p>
         </div>
 
+         <div className="rule-card">
+          <FaBan className="rule-icon" />
+          <h3>NÃO USE NOMES REAIS</h3>
+          <p>Ao se referir alguem deixa da forma mais abrangente possível, assim, ninguém ira indetificá-lo  </p>
+        </div>
+
         <div className="rule-card">
           <FaExclamationTriangle className="rule-icon" />
           <h3>Sem Conteúdo Nocivo</h3>
