@@ -21,12 +21,12 @@ function WriteSecret({ addSecret }) {
 
  const handleSubmit = (e) => {
     e.preventDefault();
-    if (texto.trim() && texto.length <= 1500) {
+    if (texto.trim() && texto.length <= 500) {
       // Envia apenas o texto puro para o addSecret
       addSecret(texto);
       setTexto('');
       setEnviado(true);
-      setTimeout(() => setEnviado(false), 3000);
+      setTimeout(() => setEnviado(false), 500);
       textareaRef.current.focus();
     }
   };
