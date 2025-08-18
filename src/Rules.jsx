@@ -19,7 +19,7 @@ function Rules() {
         <div className="rule-card">
           <FaUserSecret className="rule-icon" /> 
           <h3>Respeite o Anonimato</h3>
-          <p>Não use nomes reais, deixe da forma mais agrangente o possível</p>
+          <p>Não use nomes reais, deixe da forma mais abrangente o possível</p>
         </div>
 
         <div className="rule-card">
