@@ -23,7 +23,6 @@ function Secrets({ secrets }) {
     const padroes = {
       telefones: /(\+\d{1,3}\s?)?(\(\d{2}\)\s?)?\d{4,5}[-\s]?\d{4}/g,
       frasesSuspeitas: /(meu\s+n[úu]mero|ligue\s+para|contato\s+é|whatsapp|telefone\s+é|me\s+chame)/gi,
-      nomes: /\b([A-Za-zÀ-ú]{3,})(?:\s+[A-Za-zÀ-ú]{3,})+\b/g
     };
 
     return texto
