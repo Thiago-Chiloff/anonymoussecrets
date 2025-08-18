@@ -22,12 +22,10 @@ function Secrets({ secrets }) {
     // Padrões para detectar dados sensíveis
     const padroes = {
       telefones: /(\+\d{1,3}\s?)?(\(\d{2}\)\s?)?\d{4,5}[-\s]?\d{4}/g,
-      frasesSuspeitas: /(meu\s+n[úu]mero|ligue\s+para|contato\s+é|whatsapp|telefone\s+é|me\s+chame)/gi,
     };
 
     return texto
       .replace(padroes.telefones, '[NÚMERO BLOQUEADO]')
-      .replace(padroes.frasesSuspeitas, match => '*'.repeat(match.length))
       .replace(padroes.nomes, match => '*'.repeat(match.length));
   };
 
