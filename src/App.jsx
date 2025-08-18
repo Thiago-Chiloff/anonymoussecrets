@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { createClient } from '@supabase/supabase-js';
 import { ThemeProvider, useTheme } from './ThemeContext.jsx';
 import Header from './header.jsx';
@@ -27,7 +27,7 @@ const NotFoundWrapper = () => {
   const { isDarkMode } = useTheme();
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate('/'), 2000);
+    const timer = setTimeout(() => navigate('/'), 3000); // Redireciona após 3 segundos
     return () => clearTimeout(timer);
   }, [navigate]);
 
@@ -47,6 +47,18 @@ function App() {
   const [error, setError] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('CONNECTING');
 
+  // Função para formatar a data
+  const formatSecretDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Busca segredos com tratamento de erro
   const fetchSecrets = async () => {
     setIsLoading(true);
     try {
@@ -59,13 +71,7 @@ function App() {
 
       setSecrets(data.map(secret => ({
         ...secret,
-        formattedDate: new Date(secret.created_at).toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
+        formattedDate: formatSecretDate(secret.created_at)
       })));
     } catch (err) {
       console.error('Erro ao carregar segredos:', err);
@@ -75,6 +81,7 @@ function App() {
     }
   };
 
+  // Configura o listener em tempo real
   useEffect(() => {
     fetchSecrets();
 
@@ -84,7 +91,13 @@ function App() {
         event: 'INSERT',
         schema: 'public',
         table: 'secrets'
-      }, fetchSecrets)
+      }, (payload) => {
+        // Atualiza em tempo real sem precisar buscar tudo de novo
+        setSecrets(prev => [{
+          ...payload.new,
+          formattedDate: formatSecretDate(payload.new.created_at)
+        }, ...prev]);
+      })
       .on('system', { event: 'DISCONNECTED' }, () => {
         setConnectionStatus('DISCONNECTED');
       })
@@ -100,6 +113,7 @@ function App() {
     };
   }, []);
 
+  // Adiciona novo segredo
   const addSecret = async (text) => {
     const secretText = text?.text || text;
     if (!secretText?.trim()) return;
@@ -117,6 +131,7 @@ function App() {
     }
   };
 
+  // Aplica o tema
   useEffect(() => {
     document.documentElement.className = isDarkMode ? 'dark-mode' : 'light-mode';
   }, [isDarkMode]);
@@ -150,8 +165,14 @@ function App() {
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/secrets" element={<Secrets secrets={secrets} />} />
-          <Route path="/write" element={<WriteSecret addSecret={addSecret} />} />
+          <Route 
+            path="/secrets" 
+            element={<Secrets secrets={secrets} />} 
+          />
+          <Route 
+            path="/write" 
+            element={<WriteSecret addSecret={addSecret} />} 
+          />
           <Route path="/rules" element={<Rules />} />
           <Route path="*" element={<NotFoundWrapper />} />
         </Routes>
