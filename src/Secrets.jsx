@@ -22,11 +22,26 @@ function Secrets({ secrets }) {
     // Padrões para detectar dados sensíveis
     const padroes = {
       telefones: /(\+\d{1,3}\s?)?(\(\d{2}\)\s?)?\d{4,5}[-\s]?\d{4}/g,
+      emails: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
+      enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
+      cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
+      cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g,
+      palavrõesProibidas: /[puta,vai-se-foder,puta-que-pariu,filho-da-puta,caralho] /g, 
     };
 
     return texto
-      .replace(padroes.telefones, '[NÚMERO BLOQUEADO]')
-      .replace(padroes.telefones, match => '*'.repeat(match.length));
+      .replace(padroes.telefones, '[*]')
+      .replace(padroes.telefones, match => '*'.repeat(match.length))
+      .replace(padroes.emails, '[*]')
+      .replace(padroes.emails, match => '*'.repeat(match.length))
+      .replace(padroes.enderecos, '[*]')
+      .replace(padroes.enderecos, match => '*'.repeat(match.length))
+      .replace(padroes.cpfs, '[*]')
+      .replace(padroes.cpfs, match => '*'.repeat(match.length))
+      .replace(padroes.cnpjs, '[*]')
+      .replace(padroes.cnpjs, match => '*'.repeat(match.length))
+      .replace(padroes.palavrõesProibidas, '[*]')
+      .replace(padroes.palavrõesProibidas, match => '*'.repeat(match.length));
   };
 
   return (
