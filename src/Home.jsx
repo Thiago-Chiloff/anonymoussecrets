@@ -31,6 +31,7 @@ function Home() {
               <p className="disclaimer-text">
                 <strong>Aviso importante:</strong> Este não é um lugar para conteúdo ilegal ou prejudicial.
                 Todos os segredos são moderados. Respeite os outros como gostaria de ser respeitado.
+                Não esqueça que este é um espaço publico então outras pessoas podem ver o que você escreveu.
               </p>
               <button 
                 className="disclaimer-close"
@@ -38,8 +39,11 @@ function Home() {
                 aria-label="Fechar aviso"
               >
                 &times;
+                
               </button>
             </div>
+
+            
           )}
         </div>
 
