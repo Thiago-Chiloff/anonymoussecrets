@@ -26,7 +26,7 @@ function WriteSecret({ addSecret }) {
       addSecret(texto);
       setTexto('');
       setEnviado(true);
-      setTimeout(() => setEnviado(false), 1500);
+      setTimeout(() => setEnviado(false), 3000);
       textareaRef.current.focus();
     }
   };
