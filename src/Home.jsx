@@ -18,7 +18,7 @@ function Home() {
   return (
     <div className="home-container">
       <div className="home-content">
-        <h1 className="home-title">Confissões Anônimas</h1>
+        <h1 className="home-title">Anonymous Secrets</h1>
         
         <div className="home-messages">
           <p className="home-text">
