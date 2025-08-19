@@ -17,12 +17,12 @@ const ThemeTypes = {
 const ThemeColors = {
   [THEME_LIGHT]: {
     '--primary-color': '#6a0dad',
-    '--secondary-color': '#ffffff',
+    '--secondary-color': '#201e1eff',
     '--accent-color': '#9c27b0',
     '--text-color': '#333333',
     '--text-secondary': '#666666',
     '--card-bg': '#f8f9fa',
-    '--input-bg': '#ffffff6a',
+    '--input-bg': '#ffffff',
     '--warning-color': '#d32f2f',
     '--success-color': '#2e7d32',
     '--border-color': '#e0e0e0'
