@@ -34,7 +34,7 @@ function Home() {
                 Respeite os outros como gostaria de ser respeitado.
               </p>
               <p className='disclaimer-text'>
-                <strong>MAIS UM AVISO:</strong> NÃO ESQUEÇA QUE SEUS SEGREDOS PODEM SER LIDOS POR OUTRAS PESSOAS.
+                <strong> NÃO ESQUEÇA QUE SEUS SEGREDOS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
               </p>
               <button 
                 className="disclaimer-close"
