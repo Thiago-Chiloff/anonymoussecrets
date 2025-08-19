@@ -22,7 +22,7 @@ const ThemeColors = {
     '--text-color': '#333333',
     '--text-secondary': '#666666',
     '--card-bg': '#f8f9fa',
-    '--input-bg': '#ffffff',
+    '--input-bg': '#ffffff6a',
     '--warning-color': '#d32f2f',
     '--success-color': '#2e7d32',
     '--border-color': '#e0e0e0'
