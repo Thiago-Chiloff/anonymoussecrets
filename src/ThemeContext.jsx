@@ -17,7 +17,7 @@ const ThemeTypes = {
 const ThemeColors = {
   [THEME_LIGHT]: {
     '--primary-color': '#6a0dad',
-    '--secondary-color': '#201e1eff',
+    '--secondary-color': '#ffffff',
     '--accent-color': '#9c27b0',
     '--text-color': '#333333',
     '--text-secondary': '#666666',
