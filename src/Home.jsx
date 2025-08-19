@@ -30,7 +30,8 @@ function Home() {
             <div className="disclaimer-box">
               <p className="disclaimer-text">
                 <strong>Aviso importante:</strong> Este não é um lugar para conteúdo ilegal ou prejudicial.
-                Todos os segredos são moderados. Respeite os outros como gostaria de ser respeitado.
+                Todos os segredos são moderados. <br />
+                Respeite os outros como gostaria de ser respeitado. <br />
                 Não esqueça que este é um espaço publico então outras pessoas podem ver o que você escreveu.
               </p>
               <button 
