@@ -4,7 +4,7 @@ import badWors from '../badWords.json';
 
 // Verifica apenas as palavras proibidas sem os espaços entre elas
 const badwords = {
-  listofBadWords: badWors.listofBadWords || []
+  listofBadWords: badWors.listOfBadWords || []
 };
 
 function Secrets({ secrets }) {
