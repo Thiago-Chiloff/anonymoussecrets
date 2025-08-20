@@ -33,7 +33,7 @@ function Secrets({ secrets }) {
       enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
       cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
       cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g,
-      palavroes: new RegExp(`\\b(${badwords.listofBadWords.join('|')})\\b`, 'gi')
+      palavroes: new RegExp(`(${badwords.listofBadWords.join('|')})`, 'gi')
     };
 
     return texto
