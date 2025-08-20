@@ -1,5 +1,5 @@
 {
-    "listofBadWords": [
+    listofBadWords: [
         "cu",
         "fodase",
         "foda-se",
