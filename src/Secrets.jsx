@@ -1,8 +1,7 @@
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
-import badWors from './badwords.json'; // Importando o arquivo JSON com as palavras proibidas
+import badWors from './badwords.json'; 
 
-// Importando o arquivo JSON com as palavras proibidas
 const badwords = {
   listofBadWords: badWors.listofBadWords || []
 };
