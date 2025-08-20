@@ -1,6 +1,6 @@
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
-import badWors from './badwords.json'; 
+import badWors from './badWords.json'; 
 
 const badwords = {
   listofBadWords: badWors.listofBadWords || []
