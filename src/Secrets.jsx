@@ -1,5 +1,6 @@
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
+import badwords from './badwords.json';
 
 function Secrets({ secrets }) {
   // Função para formatar a data
@@ -26,7 +27,7 @@ function Secrets({ secrets }) {
       enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
       cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
       cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g,
-      palavroes: /\b(cu|fodase|porra|filho da puta|foda|puta|viado|buceta|caralho|pinto)/g, 
+      palavroes: {badwords}/g, 
     };
 
     return texto
