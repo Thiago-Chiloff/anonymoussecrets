@@ -1,13 +1,10 @@
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
-import badWors from '../badWords.json'; // Importando o arquivo JSON com as palavras proibidas
+import badWors from '../badWords.json'; 
 
-// Verifica se o arquivo JSON foi importado corretamente
-if (!badWors || !Array.isArray(badWors.listofBadWords)) {
-  console.error('Erro ao carregar a lista de palavras proibidas.');
-}
 
-const badwords = {
+//Verifica apenas as palavras proibidas sem os espaços entre elas
+ const badwords = {
   listofBadWords: badWors.listofBadWords || []
 };
 
