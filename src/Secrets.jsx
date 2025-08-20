@@ -1,6 +1,11 @@
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
-import badwords from './badWords.js'; // Importando a lista de palavras proibidas
+import badWors from './badwords.json'; // Importando o arquivo JSON com as palavras proibidas
+
+// Importando o arquivo JSON com as palavras proibidas
+const badwords = {
+  listofBadWords: badWors.listofBadWords || []
+};
 
 function Secrets({ secrets }) {
   // Função para formatar a data
@@ -11,11 +16,6 @@ function Secrets({ secrets }) {
       year: '2-digit',
     };
     return new Date(dateString).toLocaleDateString('pt-BR', options);
-  };
-
-  // Função para verificar se uma palavra é proibida
-  const isBadWord = (word) => {
-    return badwords.listofBadWords.includes(word.toLowerCase());
   };
 
   // Função para sanitizar texto (mesmo se já foi sanitizado antes)
@@ -32,7 +32,7 @@ function Secrets({ secrets }) {
       enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
       cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
       cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g,
-      palavroes: {isBadWord}/g, 
+      palavroes: new RegExp(`\\b(${badwords.listofBadWords.join('|')})\\b`, 'gi')
     };
 
     return texto
