@@ -2,9 +2,8 @@ import { FaUserSecret, FaCalendarAlt, FaQuoteLeft } from 'react-icons/fa';
 import './Secrets.css';
 import badWors from '../badWords.json'; 
 
-
-//Verifica apenas as palavras proibidas sem os espaços entre elas
- const badwords = {
+// Verifica apenas as palavras proibidas sem os espaços entre elas
+const badwords = {
   listofBadWords: badWors.listofBadWords || []
 };
 
@@ -32,23 +31,29 @@ function Secrets({ secrets }) {
       emails: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
       enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
       cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
-      cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g,
-      palavroes: new RegExp(`(${badwords.listofBadWords.join('|')})`, 'gi')
+      cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g
     };
 
-    return texto
+    let textoSanitizado = texto;
+    
+    // Aplica as substituições para dados sensíveis primeiro
+    textoSanitizado = textoSanitizado
       .replace(padroes.telefones, '[*]')
-      .replace(padroes.telefones, match => '*'.repeat(match.length))
       .replace(padroes.emails, '[*]')
-      .replace(padroes.emails, match => '*'.repeat(match.length))
       .replace(padroes.enderecos, '[*]')
-      .replace(padroes.enderecos, match => '*'.repeat(match.length))
       .replace(padroes.cpfs, '[*]')
-      .replace(padroes.cpfs, match => '*'.repeat(match.length))
-      .replace(padroes.cnpjs, '[*]')
-      .replace(padroes.cnpjs, match => '*'.repeat(match.length))
-      .replace(padroes.palavroes, match => '*'.repeat(match.length))
-      .replace (padroes.palavroes, '[*]');
+      .replace(padroes.cnpjs, '[*]');
+    
+    // CORREÇÃO: Substitui palavrões usando uma única expressão regular
+    // Ordena as palavras por length (mais longas primeiro) para evitar substituições parciais
+    const palavrasOrdenadas = [...badwords.listofBadWords].sort((a, b) => b.length - a.length);
+    const regexPalavroes = new RegExp(`\\b(${palavrasOrdenadas.join('|')})\\b`, 'gi');
+    
+    textoSanitizado = textoSanitizado.replace(regexPalavroes, (match) => {
+      return '*'.repeat(match.length);
+    });
+    
+    return textoSanitizado;
   };
 
   return (
