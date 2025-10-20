@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Home.css';
-import SecretKeeper from './assets/Nerd.png'; 
+import './CSS/Home.css';
+import SecretKeeper from '../assets/Nerd.png'; 
 
 function Home() {
   const navigate = useNavigate();

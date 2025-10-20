@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useTheme } from "./ThemeContext";
-import { FaSun, FaMoon, FaLock, FaEye, FaPenAlt, FaInfoCircle } from "react-icons/fa";
-import "./Header.css";
-import Logo from './assets/Icon.png';
+import { FaSun, FaMoon, FaLock, FaEye, FaPenAlt, FaInfoCircle , FaRocketchat } from "react-icons/fa";
+import "./CSS/Header.css";
+import Logo from '../assets/Icon.png';
 
 function Header() {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -36,7 +36,7 @@ function Header() {
               <span>Secrets</span>
             </button>
           </NavLink>
-          
+
           <NavLink 
             to="/write" 
             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
@@ -44,6 +44,16 @@ function Header() {
             <button className={`nav-btn primary ${isDarkMode ? "dark" : "light"}`}>
               <FaPenAlt className="nav-icon" />
               <span>Share Secret</span>
+            </button>
+          </NavLink>
+
+           <NavLink 
+            to="/messages" 
+            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
+          >
+            <button className={`nav-btn ${isDarkMode ? "dark" : "light"}`}>
+              <FaRocketchat className="nav-icon" />
+              <span>Chats</span>
             </button>
           </NavLink>
           

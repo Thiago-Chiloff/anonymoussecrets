@@ -248,6 +248,9 @@ input, textarea, select {
   padding: 2rem;
   color: var(--color-text-secondary);
 }
+
+
+
 /* Responsive Design */
 @media (max-width: 992px) {
   .main-content {
