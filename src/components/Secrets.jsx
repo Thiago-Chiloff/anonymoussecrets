@@ -9,34 +9,8 @@ const badwords = {
   listofBadWords: badWors.listOfBadWords || []
 };
 
-// Função para censurar IPs
-const censorIP = (ip) => {
-  if (!ip || typeof ip !== 'string') return '***.***.***.***';
-  return '*'.repeat(Math.min(ip.length, 10));
-};
-
 function Secrets({ secrets }) {
   const navigate = useNavigate();
-  const [userIP, setUserIP] = useState('');
-
-  // Obter IP do usuário atual
-  useEffect(() => {
-    const getIP = async () => {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        setUserIP(data.ip);
-        console.log('IP do usuário detectado:', censorIP(data.ip)); // CENSURADO
-      } catch (error) {
-        console.error('Erro ao obter IP:', error);
-        // Fallback para um ID único se não conseguir o IP
-        const fallbackIP = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        setUserIP(fallbackIP);
-        console.log('Usando IP fallback:', censorIP(fallbackIP)); // CENSURADO
-      }
-    };
-    getIP();
-  }, []);
 
   // Função para formatar a data
   const formatDate = (dateString) => {
@@ -49,44 +23,17 @@ function Secrets({ secrets }) {
   };
 
   const handleClickChat = async (secret) => {
-    // Verificar se já temos o IP do usuário
-    let currentUserIP = userIP;
-    
-    // Se ainda não temos o IP, tentar obter agora
-    if (!currentUserIP) {
-      try {
-        const response = await fetch('https://api.ipify.org?format=json');
-        const data = await response.json();
-        currentUserIP = data.ip;
-        setUserIP(data.ip);
-      } catch (error) {
-        console.error('Erro ao obter IP:', error);
-        currentUserIP = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        setUserIP(currentUserIP);
-      }
-    }
-
-    // CORREÇÃO: Incluir o IP do autor no segredo
-    const secretWithIP = {
-      ...secret,
-      // Usar author_ip se existir, caso contrário usar creator_ip como fallback
-      author_ip: secret.author_ip || secret.creator_ip || 'unknown'
+    const secretWithData = {
+      ...secret
     };
 
-    console.log('Navegando para chat com:', {
-      secret: {
-        ...secretWithIP,
-        author_ip: censorIP(secretWithIP.author_ip) // CENSURADO
-      },
-      userIP: censorIP(currentUserIP), // CENSURADO
-      authorIP: censorIP(secretWithIP.author_ip) // CENSURADO
+    console.log('Navegando para chat com segredo:', {
+      text: secretWithData.text?.substring(0, 30) + '...'
     });
 
     navigate('/chat', { 
       state: { 
-        secret: secretWithIP,
-        // Incluir o IP do usuário atual também se necessário
-        currentUserIP: currentUserIP
+        secret: secretWithData
       } 
     });
   };
@@ -160,12 +107,6 @@ function Secrets({ secrets }) {
                     {formatDate(secret.created_at)}
                   </span>
                 </div>
-                {/* Mostrar informações de debug se necessário */}
-                {process.env.NODE_ENV === 'development' && secret.author_ip && (
-                  <small className="debug-info">
-                    IP: {censorIP(secret.author_ip)} {/* CENSURADO */}
-                  </small>
-                )}
               </div>
               <button 
                 onClick={() => handleClickChat(secret)} 
