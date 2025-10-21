@@ -1,4 +1,4 @@
-import { FaExclamationTriangle, FaUserSecret, FaBan, FaHeart } from "react-icons/fa";
+import { FaExclamationTriangle, FaUserSecret, FaBan, FaHeart, FaComment } from "react-icons/fa";
 import "./CSS/Rules.css";
 
 function Rules() {
@@ -38,6 +38,12 @@ function Rules() {
           <FaHeart className="rule-icon" />
           <h3>Seja Gentil</h3>
           <p>Trate as confissões dos outros com respeito e empatia</p>
+        </div>
+
+        <div className="rule-card">
+          <FaComment className="rule-icon" />
+          <h3>Chats</h3>
+          <p>A funcionalidade <strong> "CHAT POR SEGREDO" </strong> pode ser lida por quaisquer pessoas.</p>
         </div>
       </div>
 

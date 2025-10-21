@@ -86,6 +86,10 @@ body {
   color: var(--color-text);
 }
 
+.app-footer {
+  text-align: center;
+}
+
 .main-content {
   flex: 1;
   padding: var(--spacing-xl);

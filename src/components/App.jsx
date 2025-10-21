@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, Navigate } from 'react-router-dom';
-import { ThemeProvider, useTheme } from './ThemeContext.jsx';
-import Header from './header.jsx';
-import Home from './Home.jsx';
-import Secrets from './Secrets.jsx';
-import WriteSecret from './WriteSecret.jsx';
-import Rules from './Rules.jsx';
-import Chat from './chat.jsx';
-import Messages from './messages.jsx';
+import { ThemeProvider, useTheme } from './theme/ThemeContext.jsx';
+import Header from './header/header.jsx';
+import Home from './home/Home.jsx';
+import Secrets from './secrets/Secrets.jsx';
+import WriteSecret from './secrets/WriteSecret.jsx';
+import Rules from './rules/Rules.jsx';
+import Chat from './chat/chat.jsx';
+import Messages from './chat/messages.jsx';
 import { supabase } from '../supabaseClient.js';
 import './CSS/App.css';
 
@@ -84,12 +84,9 @@ function App() {
     try {
       const response = await fetch('https://api.ipify.org?format=json');
       const data = await response.json();
-      console.log('IP do usuário obtido:', censorIP(data.ip)); // IP CENSURADO NO CONSOLE
-      return data.ip;
     } catch (error) {
       console.error('Erro ao obter IP:', error);
       const fallbackIP = `local-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      console.log('Usando IP fallback:', censorComplete(fallbackIP)); // CENSURADO
       return fallbackIP;
     }
   };
@@ -104,13 +101,7 @@ function App() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-
-      // Log com IPs censurados
-      console.log('Segredos carregados:', data.map(secret => ({
-        ...secret,
-        author_ip: censorComplete(secret.author_ip) // CENSURADO
-      })));
-
+      
       setSecrets(data.map(secret => ({
         ...secret,
         formattedDate: formatSecretDate(secret.created_at)
@@ -163,12 +154,6 @@ function App() {
       .subscribe((status) => {
         console.log('Status da subscription:', status);
       });
-
-    return () => {
-      supabase.removeChannel(channel).catch(e => {
-        console.error('Erro ao remover channel:', e);
-      });
-    };
   }, []);
 
   // Adiciona novo segredo CORRIGIDO - agora com IP

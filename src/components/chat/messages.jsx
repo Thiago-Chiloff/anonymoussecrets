@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaUserSecret, FaComment, FaClock, FaTrash, FaSearch, FaEye, FaEyeSlash, FaExclamationTriangle } from 'react-icons/fa';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import './CSS/messages.css';
 
 // Função para censurar IPs
@@ -28,9 +28,7 @@ function Messages() {
         const response = await fetch('https://api.ipify.org?format=json');
         const data = await response.json();
         setUserIP(data.ip);
-        console.log('IP do usuário detectado:', censorIP(data.ip));
       } catch (error) {
-        console.error('Erro ao obter IP:', error);
         const fallbackIP = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         setUserIP(fallbackIP);
         console.log('Usando IP fallback:', censorIP(fallbackIP));
@@ -139,7 +137,6 @@ function Messages() {
   const loadConversations = async () => {
     try {
       setLoading(true);
-      console.log('Carregando conversas para IP:', censorIP(userIP));
       
       // Carregar apenas conversas do usuário atual
       const { data: conversationsData, error } = await supabase
@@ -157,12 +154,6 @@ function Messages() {
         return;
       }
       
-      console.log('Conversas encontradas:', conversationsData?.map(conv => ({
-        ...conv,
-        creator_ip: censorIP(conv.creator_ip),
-        recipient_ip: censorIP(conv.recipient_ip)
-      })));
-
       // Se não há conversas, mostrar mensagem e retornar
       if (!conversationsData || conversationsData.length === 0) {
         console.log('Nenhuma conversa encontrada para este IP');
@@ -234,16 +225,6 @@ function Messages() {
           }
         })
       );
-      
-      console.log('Todas as conversas processadas:', conversationsWithMessages.map(conv => ({
-        ...conv,
-        creator_ip: censorIP(conv.creator_ip),
-        recipient_ip: censorIP(conv.recipient_ip),
-        messages: conv.messages.map(msg => ({
-          ...msg,
-          sender_ip: censorIP(msg.sender_ip)
-        }))
-      })));
       setConversations(conversationsWithMessages);
       setFilteredConversations(conversationsWithMessages);
       

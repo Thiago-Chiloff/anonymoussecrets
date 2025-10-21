@@ -36,6 +36,9 @@ function Home() {
               <p className='disclaimer-text'>
                 <strong> NÃO ESQUEÇA QUE SEUS SEGREDOS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
               </p>
+              <p className='disclaimer-text'>
+                <strong>OS CHATS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
+              </p>
               <button 
                 className="disclaimer-close"
                 onClick={() => setShowDisclaimer(false)}

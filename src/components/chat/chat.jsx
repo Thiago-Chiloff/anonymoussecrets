@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaPaperPlane, FaLock, FaUserSecret, FaComments, FaExclamationTriangle, FaSync, FaBell } from 'react-icons/fa';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import './CSS/chat.css';
 
 function Chat() {
@@ -12,8 +12,6 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [secret, setSecret] = useState(null);
-  const [messageCount, setMessageCount] = useState(0);
-  const [maxMessages] = useState(3);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [usingFallback, setUsingFallback] = useState(false);
@@ -26,7 +24,6 @@ function Chat() {
       const secretData = location.state.secret;
       setSecret(secretData);
       
-      console.log('Secret data recebido:', secretData);
     }
   }, [location.state]);
 
@@ -90,8 +87,6 @@ function Chat() {
         throw convError;
       }
 
-      console.log('Conversas existentes encontradas:', existingConversations);
-
       let conversation = existingConversations?.[0];
 
       // Se não encontrou conversa, criar uma nova
@@ -116,7 +111,6 @@ function Chat() {
       }
 
       setConversationId(conversation.id);
-      console.log('Conversation ID definido:', conversation.id);
 
       // Carregar TODAS as mensagens da conversa
       const { data: messagesData, error: messagesError } = await supabase
@@ -129,14 +123,8 @@ function Chat() {
         console.error('Erro ao carregar mensagens:', messagesError);
         throw messagesError;
       }
-
-      console.log('Mensagens carregadas:', messagesData);
-
-      setMessages(messagesData || []);
       
-      // Contar apenas mensagens recebidas para o limite
-      const receivedMessages = messagesData || [];
-      setMessageCount(receivedMessages.length);
+      setMessages(messagesData || []);
       
       setUsingFallback(false);
       
@@ -178,7 +166,6 @@ function Chat() {
           setMessages(prev => [...prev, payload.new]);
           
           // Incrementar o contador para mensagens recebidas
-          setMessageCount(prev => prev + 1);
           showNotification(payload.new.text);
           console.log('Nova mensagem - incrementando contador');
         })
@@ -233,7 +220,6 @@ function Chat() {
         
         // Contar mensagens recebidas
         const receivedMessages = parsedMessages.messages || [];
-        setMessageCount(receivedMessages.length);
         
         setError('Usando armazenamento local (Supabase indisponível)');
         
@@ -243,12 +229,10 @@ function Chat() {
       } catch (error) {
         console.error('Erro no fallback localStorage:', error);
         setMessages([]);
-        setMessageCount(0);
       }
     } else {
       console.log('Nenhum dado encontrado no localStorage');
       setMessages([]);
-      setMessageCount(0);
     }
   };
 
@@ -261,10 +245,9 @@ function Chat() {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     
-    if (!newMessage.trim() || messageCount >= maxMessages || !secret || !canSendMessages) {
+    if (!newMessage.trim() || !secret || !canSendMessages) {
       console.log('Condições não atendidas para enviar mensagem:', {
         hasMessage: !!newMessage.trim(),
-        underLimit: messageCount < maxMessages,
         hasSecret: !!secret,
         canSendMessages: canSendMessages
       });
@@ -306,7 +289,7 @@ function Chat() {
       // Backup no localStorage
       const chatKey = `chat-${secret.text}`;
       const existingData = localStorage.getItem(chatKey);
-      const currentData = existingData ? JSON.parse(existingData) : { messages: [], count: messageCount };
+      const currentData = existingData ? JSON.parse(existingData) : { messages: [] };
       
       localStorage.setItem(chatKey, JSON.stringify({
         messages: [...currentData.messages, message],
@@ -334,7 +317,7 @@ function Chat() {
     
     const chatKey = `chat-${secret.text}`;
     const existingData = localStorage.getItem(chatKey);
-    const currentData = existingData ? JSON.parse(existingData) : { messages: [], count: messageCount };
+    const currentData = existingData ? JSON.parse(existingData) : { messages: []};
     
     const updatedData = {
       messages: [...currentData.messages, message],
@@ -454,9 +437,6 @@ function Chat() {
           >
             <FaBell />
           </button>
-          <div className="message-counter">
-            {messageCount}/{maxMessages} mensagens recebidas
-          </div>
         </div>
       </div>
 
@@ -494,7 +474,7 @@ function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
-      {canSendMessages && messageCount < maxMessages ? (
+      {canSendMessages ? (
         <form onSubmit={handleSendMessage} className="chat-input-form">
           <input
             type="text"
@@ -516,8 +496,6 @@ function Chat() {
       ) : (
         <div className="message-limit-reached">
           <FaLock className="lock-icon" />
-          <p>Limite de mensagens recebidas atingido</p>
-          <small>Máximo de {maxMessages} mensagens recebidas por conversa</small>
         </div>
       )}
     </div>
