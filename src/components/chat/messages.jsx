@@ -4,12 +4,6 @@ import { FaArrowLeft, FaUserSecret, FaComment, FaClock, FaTrash, FaSearch, FaEye
 import { supabase } from '../../supabaseClient';
 import '../CSS/messages.css';
 
-// Função para censurar IPs
-const censorIP = (ip) => {
-  if (!ip || typeof ip !== 'string') return '***.***.***.***';
-  return '*'.repeat(Math.min(ip.length, 10));
-};
-
 function Messages() {
   const [conversations, setConversations] = useState([]);
   const [filteredConversations, setFilteredConversations] = useState([]);
