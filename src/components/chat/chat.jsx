@@ -14,7 +14,7 @@ function Chat() {
   const [secret, setSecret] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usingFallback, setUsingFallback] = useState(false);
+  const [usingFallback, setUsingFallback] = useState(true);
   const [conversationId, setConversationId] = useState(null);
   const [canSendMessages, setCanSendMessages] = useState(true);
 
@@ -125,7 +125,7 @@ function Chat() {
       
       setMessages(messagesData || []);
       
-      setUsingFallback(true);
+      setUsingFallback(false);
       
       // Configurar real-time após carregar as mensagens
       setupRealtimeSubscription();
