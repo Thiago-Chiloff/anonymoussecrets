@@ -107,7 +107,6 @@ function Chat() {
         }
 
         conversation = newConversation;
-        console.log('Nova conversa criada:', conversation);
       }
 
       setConversationId(conversation.id);
@@ -126,7 +125,7 @@ function Chat() {
       
       setMessages(messagesData || []);
       
-      setUsingFallback(false);
+      setUsingFallback(true);
       
       // Configurar real-time após carregar as mensagens
       setupRealtimeSubscription();
@@ -145,7 +144,7 @@ function Chat() {
   // Configurar subscription real-time
   const setupRealtimeSubscription = useCallback(() => {
     if (!conversationId || usingFallback) {
-      console.log('Não configurando real-time - conversationId:', conversationId, 'usingFallback:', usingFallback);
+      console.log('Não configurando real-time ' , 'usingFallback:', usingFallback);
       return;
     }
 
@@ -265,8 +264,6 @@ function Chat() {
       if (!conversationId || conversationId === 'null' || conversationId === 'undefined') {
         throw new Error('ID da conversa inválido. Recarregue a página.');
       }
-
-      console.log('Enviando mensagem para conversation:', conversationId);
       
       // Enviar para Supabase
       const { data: message, error } = await supabase
