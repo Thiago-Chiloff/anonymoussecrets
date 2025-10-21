@@ -26,10 +26,6 @@ function Secrets({ secrets }) {
       ...secret
     };
 
-    console.log('Navegando para chat com segredo:', {
-      text: secretWithData.text?.substring(0, 30) + '...'
-    });
-
     navigate('/chat', { 
       state: { 
         secret: secretWithData
