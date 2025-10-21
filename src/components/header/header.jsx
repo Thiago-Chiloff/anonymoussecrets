@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useTheme } from "../theme/ThemeContext";
 import { FaSun, FaMoon, FaLock, FaEye, FaPenAlt, FaInfoCircle , FaRocketchat } from "react-icons/fa";
-import "./CSS/Header.css";
+import "../CSS/Header.css";
 import Logo from '../assets/Icon.png';
 
 function Header() {

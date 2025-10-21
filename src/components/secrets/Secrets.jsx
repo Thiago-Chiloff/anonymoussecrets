@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
 import { FaUserSecret, FaCalendarAlt, FaQuoteLeft, FaRocketchat } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import './CSS/Secrets.css';
+import '../CSS/Secrets.css';
 import badWors from './badWords.json'; 
 
 // Verifica apenas as palavras proibidas sem os espaços entre elas

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { FaLock, FaPaperPlane, FaCheckCircle, FaShieldAlt } from 'react-icons/fa';
-import './CSS/WriteSecret.css';
+import '../CSS/WriteSecret.css';
 
 function WriteSecret({ addSecret }) {
   const [texto, setTexto] = useState('');

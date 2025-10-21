@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaUserSecret, FaComment, FaClock, FaTrash, FaSearch, FaEye, FaEyeSlash, FaExclamationTriangle } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
-import './CSS/messages.css';
+import '../CSS/messages.css';
 
 // Função para censurar IPs
 const censorIP = (ip) => {

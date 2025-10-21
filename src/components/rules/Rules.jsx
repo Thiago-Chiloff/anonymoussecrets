@@ -1,5 +1,5 @@
 import { FaExclamationTriangle, FaUserSecret, FaBan, FaHeart, FaComment } from "react-icons/fa";
-import "./CSS/Rules.css";
+import "../CSS/Rules.css";
 
 function Rules() {
   return (

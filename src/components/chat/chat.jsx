@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaPaperPlane, FaLock, FaUserSecret, FaComments, FaExclamationTriangle, FaSync, FaBell } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
-import './CSS/chat.css';
+import '../CSS/chat.css';
 
 function Chat() {
   const location = useLocation();

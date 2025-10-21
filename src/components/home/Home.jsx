@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './CSS/Home.css';
+import '../CSS/Home.css';
 import SecretKeeper from '../assets/Nerd.png'; 
 
 function Home() {
