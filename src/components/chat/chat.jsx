@@ -14,7 +14,7 @@ function Chat() {
   const [secret, setSecret] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [usingFallback, setUsingFallback] = useState(true);
+  const [usingFallback, setUsingFallback] = useState(false);
   const [conversationId, setConversationId] = useState(null);
   const [canSendMessages, setCanSendMessages] = useState(true);
 
@@ -23,11 +23,10 @@ function Chat() {
     if (location.state?.secret) {
       const secretData = location.state.secret;
       setSecret(secretData);
-      
     }
   }, [location.state]);
 
-  // Carregar conversa quando secret mudar
+  // Carregar conversa quando secret mudar desgraça 
   useEffect(() => {
     if (secret) {
       console.log('Iniciando carga da conversa...');
@@ -125,7 +124,7 @@ function Chat() {
       
       setMessages(messagesData || []);
       
-      setUsingFallback(false);
+      setUsingFallback(false); 
       
       // Configurar real-time após carregar as mensagens
       setupRealtimeSubscription();
@@ -203,7 +202,7 @@ function Chat() {
     }
   };
 
-  // Fallback para localStorage
+  // Fallback para localStorage - SÓ DEVE SER CHAMADO EM CASO DE ERRO
   const loadFromLocalStorage = () => {
     if (!secret) return;
     
@@ -216,9 +215,6 @@ function Chat() {
       try {
         const parsedMessages = JSON.parse(savedMessages);
         setMessages(parsedMessages.messages || []);
-        
-        // Contar mensagens recebidas
-        const receivedMessages = parsedMessages.messages || [];
         
         setError('Usando armazenamento local (Supabase indisponível)');
         
@@ -283,7 +279,7 @@ function Chat() {
       setNewMessage('');
       setMessages(prev => [...prev, message]);
 
-      // Backup no localStorage
+      // Backup no localStorage (apenas como backup, não como modo principal)
       const chatKey = `chat-${secret.text}`;
       const existingData = localStorage.getItem(chatKey);
       const currentData = existingData ? JSON.parse(existingData) : { messages: [] };
@@ -299,11 +295,14 @@ function Chat() {
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
       setError(error.message);
-      sendMessageFallback();
+      // Só usar fallback se realmente houver um erro de conexão
+      if (error.message.includes('network') || error.message.includes('fetch') || error.message.includes('offline')) {
+        sendMessageFallback();
+      }
     }
   };
 
-  // Enviar mensagem (fallback)
+  // Enviar mensagem (fallback) - SÓ EM CASO DE ERRO REAL
   const sendMessageFallback = () => {
     console.log('Enviando mensagem via fallback');
     const message = {
@@ -333,6 +332,7 @@ function Chat() {
   const reloadConversation = () => {
     console.log('Recarregando conversa...');
     setLoading(true);
+    setUsingFallback(false); 
     loadConversation();
   };
 
@@ -442,10 +442,6 @@ function Chat() {
           <div className="no-messages">
             <FaLock className="lock-icon" />
             <p>Nenhuma mensagem ainda</p>
-            <small>
-              Máximo de 3 mensagens recebidas por segredo
-            </small>
-            <br />
             <small>
               O autor do segredo receberá suas mensagens
             </small>
