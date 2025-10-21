@@ -523,7 +523,6 @@ function Messages() {
           Minhas Mensagens
         </h1>
         <div className="header-info">
-          <small>IP: {censorIP(userIP)}</small>
           {conversations.some(conv => conv.unreadCount > 0) && (
             <span className="unread-indicator">
               {conversations.reduce((total, conv) => total + (conv.unreadCount || 0), 0)} não lidas
