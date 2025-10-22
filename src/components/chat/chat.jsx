@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaArrowLeft, FaPaperPlane, FaLock, FaUserSecret, FaComments, FaExclamationTriangle, FaSync, FaBell } from 'react-icons/fa';
+import { FaArrowLeft, FaPaperPlane, FaLock, FaUserSecret, FaComments, FaExclamationTriangle, FaSync } from 'react-icons/fa';
 import { supabase } from '../../supabaseClient';
 import '../CSS/chat.css';
+import badWordsList from "../badWords.json";
 
 function Chat() {
   const location = useLocation();
   const navigate = useNavigate();
   const messagesEndRef = useRef(null);
-  
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [secret, setSecret] = useState(null);
@@ -18,6 +18,60 @@ function Chat() {
   const [conversationId, setConversationId] = useState(null);
   const [canSendMessages, setCanSendMessages] = useState(true);
 
+  // Configuração das bad words
+  const badwords = {
+    listofBadWords: badWordsList.listOfBadWords || []
+  };
+
+  // Padrões para dados sensíveis
+  const padroes = {
+    telefones: /(\+\d{1,3}\s?)?(\(\d{2}\)\s?)?\d{4,5}[-\s]?\d{4}/g,
+    emails: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
+    enderecos: /(\d{1,5}\s[a-zA-Z0-9\s,.]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+,\s[a-zA-Z\s]+)/g,
+    cpfs: /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/g,
+    cnpjs: /\b\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}\b/g
+  };
+
+  // Função para sanitizar texto
+  const sanitizarTexto = (texto) => {
+    if (!texto) return '';
+    
+    // Verifica se já foi sanitizado
+    if (texto.includes('[*]') || texto.includes('*'.repeat(5))) {
+      return texto;
+    }
+
+    let textoSanitizado = texto;
+
+    // Aplica as substituições para dados sensíveis primeiro
+    textoSanitizado = textoSanitizado
+      .replace(padroes.telefones, '[*]')
+      .replace(padroes.emails, '[*]')
+      .replace(padroes.enderecos, '[*]')
+      .replace(padroes.cpfs, '[*]')
+      .replace(padroes.cnpjs, '[*]');
+
+    // Verifica se há palavras para filtrar
+    if (!badwords.listofBadWords || badwords.listofBadWords.length === 0) {
+      return textoSanitizado;
+    }
+    
+    // Ordena as palavras por length (mais longas primeiro) para evitar substituições parciais
+    const palavrasOrdenadas = [...badwords.listofBadWords].sort((a, b) => b.length - a.length);
+    const regexPalavroes = new RegExp(`\\b(${palavrasOrdenadas.join('|')})\\b`, 'gi');
+    
+    textoSanitizado = textoSanitizado.replace(regexPalavroes, (match) => {
+      return '*'.repeat(match.length);
+    });
+    
+    return textoSanitizado;
+  };
+
+  // Função para sanitizar mensagens antes de enviar/exibir
+  const sanitizarMensagem = (mensagem) => {
+    return sanitizarTexto(mensagem);
+  };
+
   // Carregar segredo da navigation state
   useEffect(() => {
     if (location.state?.secret) {
@@ -26,10 +80,9 @@ function Chat() {
     }
   }, [location.state]);
 
-  // Carregar conversa quando secret mudar desgraça 
+  // Carregar conversa quando secret mudar
   useEffect(() => {
     if (secret) {
-      console.log('Iniciando carga da conversa...');
       loadConversation();
     }
   }, [secret]);
@@ -38,7 +91,6 @@ function Chat() {
   const checkDatabase = async () => {
     try {
       if (!conversationId || conversationId === 'null' || conversationId === 'undefined') {
-        console.log('Conversation ID não é válido:', conversationId);
         return;
       }
 
@@ -52,8 +104,6 @@ function Chat() {
         console.error('Erro ao verificar banco:', error);
         return;
       }
-
-      console.log('Mensagens no banco de dados:', messages || []);
       
     } catch (error) {
       console.error('Erro ao verificar banco:', error);
@@ -63,16 +113,13 @@ function Chat() {
   // Função para carregar conversa
   const loadConversation = async () => {
     if (!secret) {
-      console.log('Condições não atendidas para carregar conversa');
       return;
     }
     
     setLoading(true);
     setError(null);
 
-    try {
-      console.log('Buscando conversa existente para segredo:', secret.text);
-      
+    try {      
       // Buscar TODAS as comentários para este segredo
       const { data: existingConversations, error: convError } = await supabase
         .from('conversations')
@@ -89,9 +136,7 @@ function Chat() {
       let conversation = existingConversations?.[0];
 
       // Se não encontrou conversa, criar uma nova
-      if (!conversation) {
-        console.log('Nenhuma conversa existente, criando nova...');
-        
+      if (!conversation) {        
         const { data: newConversation, error: createError } = await supabase
           .from('conversations')
           .insert([{
@@ -129,8 +174,6 @@ function Chat() {
       // Configurar real-time após carregar as mensagens
       setupRealtimeSubscription();
 
-      console.log('Conversa carregada com sucesso. Total de mensagens:', messagesData?.length || 0);
-
     } catch (error) {
       console.error('Erro ao carregar do Supabase:', error);
       setError('Erro ao carregar conversa: ' + error.message);
@@ -143,13 +186,10 @@ function Chat() {
   // Configurar subscription real-time
   const setupRealtimeSubscription = useCallback(() => {
     if (!conversationId || usingFallback) {
-      console.log('Não configurando real-time ' , 'usingFallback:', usingFallback);
       return;
     }
 
-    try {
-      console.log('Configurando real-time para conversation:', conversationId);
-      
+    try {      
       const subscription = supabase
         .channel(`conversation:${conversationId}`)
         .on('postgres_changes', {
@@ -158,21 +198,12 @@ function Chat() {
           table: 'messages',
           filter: `conversation_id=eq.${conversationId}`
         }, (payload) => {
-          console.log('Nova mensagem recebida via real-time:', payload.new);
-          
           // Adicionar um novo comentário
           setMessages(prev => [...prev, payload.new]);
-          
-          // Incrementar o contador para os comentários
-          showNotification(payload.new.text);
-          console.log('Nova mensagem - incrementando contador');
         })
         .subscribe();
 
-      console.log('Subscription real-time configurada com sucesso');
-
       return () => {
-        console.log('Desinscrevendo do real-time');
         subscription.unsubscribe();
       };
     } catch (error) {
@@ -180,33 +211,10 @@ function Chat() {
     }
   }, [conversationId, usingFallback]);
 
-  // Mostrar notificação
-  const showNotification = (messageText) => {
-    if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('Nova mensagem recebida', {
-        body: messageText.length > 50 ? `${messageText.substring(0, 50)}...` : messageText,
-        icon: '/favicon.ico',
-        tag: 'new-message'
-      });
-    }
-  };
-
-  // Solicitar permissão para notificações
-  const requestNotificationPermission = () => {
-    if ('Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          console.log('Permissão para notificações concedida');
-        }
-      });
-    }
-  };
-
-  // Fallback para localStorage - SÓ DEVE SER CHAMADO EM CASO DE ERRO BUCETA FUNCIONA
+  // Fallback para localStorage - SÓ DEVE SER CHAMADO EM CASO DE ERRO
   const loadFromLocalStorage = () => {
     if (!secret) return;
     
-    console.log('Usando fallback localStorage');
     setUsingFallback(true);
     const chatKey = `chat-${secret.text}`;
     const savedMessages = localStorage.getItem(chatKey);
@@ -218,15 +226,11 @@ function Chat() {
         
         setError('Usando armazenamento local (Supabase indisponível)');
         
-        console.log('Dados carregados do localStorage:', {
-          totalMessages: parsedMessages.messages.length
-        });
       } catch (error) {
         console.error('Erro no fallback localStorage:', error);
         setMessages([]);
       }
     } else {
-      console.log('Nenhum dado encontrado no localStorage');
       setMessages([]);
     }
   };
@@ -241,17 +245,14 @@ function Chat() {
     e.preventDefault();
     
     if (!newMessage.trim() || !secret || !canSendMessages) {
-      console.log('Condições não atendidas para enviar mensagem:', {
-        hasMessage: !!newMessage.trim(),
-        hasSecret: !!secret,
-        canSendMessages: canSendMessages
-      });
       return;
     }
     
+    // Sanitiza a mensagem antes de enviar
+    const mensagemSanitizada = sanitizarMensagem(newMessage.trim());
+    
     if (usingFallback) {
-      console.log('Usando fallback para enviar mensagem');
-      sendMessageFallback();
+      sendMessageFallback(mensagemSanitizada);
       return;
     }
     
@@ -261,12 +262,12 @@ function Chat() {
         throw new Error('ID da conversa inválido. Recarregue a página.');
       }
       
-      // Enviar para Supabase CARALHO 
+      // Enviar para Supabase com mensagem sanitizada
       const { data: message, error } = await supabase
         .from('messages')
         .insert([{
           conversation_id: conversationId,
-          text: newMessage.trim()
+          text: mensagemSanitizada
         }])
         .select()
         .single();
@@ -290,24 +291,21 @@ function Chat() {
         secret: secret
       }));
 
-      console.log('Mensagem enviada com sucesso');
-
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
       setError(error.message);
       // Só usar fallback se realmente houver um erro de conexão
       if (error.message.includes('network') || error.message.includes('fetch') || error.message.includes('offline')) {
-        sendMessageFallback();
+        sendMessageFallback(mensagemSanitizada);
       }
     }
   };
 
   // Enviar mensagem (fallback) - SÓ EM CASO DE ERRO REAL
-  const sendMessageFallback = () => {
-    console.log('Enviando mensagem via fallback');
+  const sendMessageFallback = (mensagemSanitizada) => {
     const message = {
       id: Date.now(),
-      text: newMessage.trim(),
+      text: mensagemSanitizada,
       created_at: new Date().toISOString()
     };
     
@@ -330,7 +328,6 @@ function Chat() {
 
   // Recarregar conversa
   const reloadConversation = () => {
-    console.log('Recarregando conversa...');
     setLoading(true);
     setUsingFallback(false); 
     loadConversation();
@@ -348,11 +345,6 @@ function Chat() {
   // Voltar para a página anterior
   const handleBack = () => {
     navigate(-1);
-  };
-
-  // Permitir notificações
-  const enableNotifications = () => {
-    requestNotificationPermission();
   };
 
   if (loading) {
@@ -425,8 +417,6 @@ function Chat() {
             </div>
           </div>
         </div>
-        
-       
       </div>
 
       <div className="chat-messages">
