@@ -73,7 +73,7 @@ function Chat() {
     try {
       console.log('Buscando conversa existente para segredo:', secret.text);
       
-      // Buscar TODAS as conversas para este segredo
+      // Buscar TODAS as comentários para este segredo
       const { data: existingConversations, error: convError } = await supabase
         .from('conversations')
         .select('*')
@@ -82,7 +82,7 @@ function Chat() {
         .limit(1);
 
       if (convError) {
-        console.error('Erro ao buscar conversas:', convError);
+        console.error('Erro ao buscar comentários:', convError);
         throw convError;
       }
 
@@ -160,10 +160,10 @@ function Chat() {
         }, (payload) => {
           console.log('Nova mensagem recebida via real-time:', payload.new);
           
-          // Adicionar a nova mensagem
+          // Adicionar um novo comentário
           setMessages(prev => [...prev, payload.new]);
           
-          // Incrementar o contador para mensagens recebidas
+          // Incrementar o contador para os comentários
           showNotification(payload.new.text);
           console.log('Nova mensagem - incrementando contador');
         })
@@ -202,7 +202,7 @@ function Chat() {
     }
   };
 
-  // Fallback para localStorage - SÓ DEVE SER CHAMADO EM CASO DE ERRO
+  // Fallback para localStorage - SÓ DEVE SER CHAMADO EM CASO DE ERRO BUCETA FUNCIONA
   const loadFromLocalStorage = () => {
     if (!secret) return;
     
@@ -261,7 +261,7 @@ function Chat() {
         throw new Error('ID da conversa inválido. Recarregue a página.');
       }
       
-      // Enviar para Supabase
+      // Enviar para Supabase CARALHO 
       const { data: message, error } = await supabase
         .from('messages')
         .insert([{
@@ -365,7 +365,7 @@ function Chat() {
           <h2>Carregando...</h2>
         </div>
         <div className="loading-messages">
-          <p>Carregando conversa...</p>
+          <p>Carregando comentários...</p>
         </div>
       </div>
     );
@@ -382,7 +382,7 @@ function Chat() {
         </div>
         <div className="no-chats">
           <FaComments className="chats-icon" />
-          <p>Você ainda não iniciou conversas</p>
+          <p>Ainda não há nenhum comentário</p>
           <small>Volte aos segredos para enviar uma mensagem</small>
         </div>
       </div>
@@ -418,32 +418,24 @@ function Chat() {
           <div className="chat-secret-info">
             <FaUserSecret className="secret-icon" />
             <div className="secret-preview">
-              {secret?.text && secret.text.length > 30 
-                ? `${secret.text.substring(0, 30)}...` 
+              {secret?.text && secret.text.length > 50
+                ? `${secret.text.substring(0, 50)}...` 
                 : secret?.text || "Conversa anônima"
               }
             </div>
           </div>
         </div>
         
-        <div className="header-actions">
-          <button 
-            onClick={enableNotifications}
-            className="notification-button"
-            title="Ativar notificações"
-          >
-            <FaBell />
-          </button>
-        </div>
+       
       </div>
 
       <div className="chat-messages">
         {messages.length === 0 ? (
           <div className="no-messages">
             <FaLock className="lock-icon" />
-            <p>Nenhuma mensagem ainda</p>
+            <p>Nenhum comentário ainda</p>
             <small>
-              O autor do segredo receberá suas mensagens
+             Seja o primeiro a comentar sobre este segredo
             </small>
           </div>
         ) : (
@@ -453,7 +445,7 @@ function Chat() {
               className="message other-message"
             >
               <div className="message-sender">
-                Usuário
+                User
               </div>
               <div className="message-content">
                 <p>{message.text}</p>
@@ -473,7 +465,7 @@ function Chat() {
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Digite sua mensagem..."
+            placeholder="Digite seu Comentário..."
             maxLength={200}
             className="chat-input"
           />

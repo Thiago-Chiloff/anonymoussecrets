@@ -7,7 +7,6 @@ import Secrets from './secrets/Secrets.jsx';
 import WriteSecret from './secrets/WriteSecret.jsx';
 import Rules from './rules/Rules.jsx';
 import Chat from './chat/chat.jsx';
-import Messages from './chat/messages.jsx';
 import { supabase } from '../supabaseClient.js';
 import './CSS/App.css';
 
@@ -243,7 +242,6 @@ function App() {
             path="/write" 
             element={<WriteSecret addSecret={addSecret} />} 
           />
-          <Route path='/messages' element={<Messages />} />
           <Route path='/chat' element={<Chat />} />
           <Route path="/rules" element={<Rules />} />
           <Route path="*" element={<NotFoundWrapper />} />

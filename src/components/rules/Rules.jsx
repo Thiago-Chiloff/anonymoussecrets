@@ -42,8 +42,8 @@ function Rules() {
 
         <div className="rule-card">
           <FaComment className="rule-icon" />
-          <h3>Chats</h3>
-          <p>A funcionalidade <strong> "CHAT POR SEGREDO" </strong> pode ser lida por quaisquer pessoas.</p>
+          <h3>Comentários</h3>
+          <p>A funcionalidade <strong> "COMENTÁRIO POR SEGREDO" </strong> pode ser lida por quaisquer pessoas, mais uma vez seja gentil e compassivo.</p>
         </div>
       </div>
 

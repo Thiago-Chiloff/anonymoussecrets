@@ -37,7 +37,7 @@ function Home() {
                 <strong> NÃO ESQUEÇA QUE SEUS SEGREDOS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
               </p>
               <p className='disclaimer-text'>
-                <strong>OS CHATS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
+                <strong>OS COMENTÁRIOS PODEM SER LIDOS POR OUTRAS PESSOAS.</strong>
               </p>
               <button 
                 className="disclaimer-close"

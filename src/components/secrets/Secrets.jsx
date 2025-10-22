@@ -107,7 +107,7 @@ function Secrets({ secrets }) {
                 onClick={() => handleClickChat(secret)} 
                 className="chat-button"
               >
-                <FaRocketchat />Envie uma msg para a pessoa
+                <FaRocketchat />Envie um comentário para o segredo
               </button>
             </div>
           ))}

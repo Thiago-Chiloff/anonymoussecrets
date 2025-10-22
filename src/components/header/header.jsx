@@ -47,16 +47,6 @@ function Header() {
             </button>
           </NavLink>
 
-           <NavLink 
-            to="/messages" 
-            className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
-          >
-            <button className={`nav-btn ${isDarkMode ? "dark" : "light"}`}>
-              <FaRocketchat className="nav-icon" />
-              <span>Chats</span>
-            </button>
-          </NavLink>
-          
           <NavLink 
             to="/rules" 
             className={({ isActive }) => isActive ? "nav-link active" : "nav-link"}
